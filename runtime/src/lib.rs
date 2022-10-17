@@ -290,7 +290,19 @@ construct_runtime!(
 		TemplateModule: pallet_template,
 	}
 );
-
+construct_runtime!(
+	pub enum Runtime where
+	   Block = Block,
+	   NodeBlock = opaque::Block,
+	   UncheckedExtrinsic = UncheckedExtrinsic
+	 {
+	   /* --snip-- */
+	   Balances: pallet_balances,
+	
+	   /*** Add This Line ***/
+	   Nicks: pallet_nicks,
+	 }
+	);
 /// The address format for describing accounts.
 pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
 /// Block header type as expected by this runtime.
@@ -548,5 +560,49 @@ impl_runtime_apis! {
 		fn execute_block_no_check(block: Block) -> Weight {
 			Executive::execute_block_no_check(block)
 		}
+	}
+	/// Existential deposit.
+pub const EXISTENTIAL_DEPOSIT: u128 = 500;
+
+impl pallet_balances::Config for Runtime {
+  type MaxLocks = ConstU32<50>;
+  type MaxReserves = ();
+  type ReserveIdentifier = [u8; 8];
+  /// The type for recording an account's balance.
+  type Balance = Balance;
+  /// The ubiquitous event type.
+  type RuntimeEvent = RuntimeEvent;
+  /// The empty value, (), is used to specify a no-op callback function.
+  type DustRemoval = ();
+  /// Set the minimum balanced required for an account to exist on-chain
+  type ExistentialDeposit = ConstU128<EXISTENTIAL_DEPOSIT>;
+  /// The FRAME runtime system is used to track the accounts that hold balances.
+  type AccountStore = System;
+  /// Weight information is supplied to the Balances pallet by the node template runtime.
+  type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
+}
+impl pallet_nicks::Config for Runtime {
+	// The Balances pallet implements the ReservableCurrency trait.
+	// `Balances` is defined in `construct_runtime!` macro.
+	type Currency = Balances;
+	
+	// Set ReservationFee to a value.
+	type ReservationFee = ConstU128<100>;
+	
+	// No action is taken when deposits are forfeited.
+	type Slashed = ();
+	
+	// Configure the FRAME System Root origin as the Nick pallet admin.
+	// https://paritytech.github.io/substrate/master/frame_system/enum.RawOrigin.html#variant.Root
+	type ForceOrigin = frame_system::EnsureRoot<AccountId>;
+	
+	// Set MinLength of nick name to a desired value.
+	type MinLength = ConstU32<8>;
+	
+	// Set MaxLength of nick name to a desired value.
+	type MaxLength = ConstU32<32>;
+	
+	// The ubiquitous event type.
+	type RuntimeEvent = RuntimeEvent;
 	}
 }
