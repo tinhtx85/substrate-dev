@@ -267,6 +267,8 @@ construct_runtime!(
 		Aura: pallet_aura,
 		Grandpa: pallet_grandpa,
 		Balances: pallet_balances,
+		/*** Add This Line ***/
+		Nicks: pallet_nicks,
 		TransactionPayment: pallet_transaction_payment,
 		Sudo: pallet_sudo,
 		// Include the custom logic from the pallet-template in the runtime.
@@ -554,26 +556,6 @@ impl pallet_balances::Config for Runtime {
 }
 }
 ///TINHTX
-/// Existential deposit.
-pub const EXISTENTIAL_DEPOSIT: u128 = 500;
-
-impl pallet_balances::Config for Runtime {
-  type MaxLocks = ConstU32<50>;
-  type MaxReserves = ();
-  type ReserveIdentifier = [u8; 8];
-  /// The type for recording an account's balance.
-  type Balance = Balance;
-  /// The ubiquitous event type.
-  type RuntimeEvent = RuntimeEvent;
-  /// The empty value, (), is used to specify a no-op callback function.
-  type DustRemoval = ();
-  /// Set the minimum balanced required for an account to exist on-chain
-  type ExistentialDeposit = ConstU128<EXISTENTIAL_DEPOSIT>;
-  /// The FRAME runtime system is used to track the accounts that hold balances.
-  type AccountStore = System;
-  /// Weight information is supplied to the Balances pallet by the node template runtime.
-  type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
-}
 impl pallet_nicks::Config for Runtime {
 	// The Balances pallet implements the ReservableCurrency trait.
 	// `Balances` is defined in `construct_runtime!` macro.
@@ -598,16 +580,3 @@ impl pallet_nicks::Config for Runtime {
 	// The ubiquitous event type.
 	type RuntimeEvent = RuntimeEvent;
 	}
-	construct_runtime!(
-		pub enum Runtime where
-		   Block = Block,
-		   NodeBlock = opaque::Block,
-		   UncheckedExtrinsic = UncheckedExtrinsic
-		 {
-		   /* --snip-- */
-		   Balances: pallet_balances,
-		
-		   /*** Add This Line ***/
-		   Nicks: pallet_nicks,
-		 }
-		);
