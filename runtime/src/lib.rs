@@ -554,7 +554,6 @@ impl pallet_balances::Config for Runtime {
   /// Weight information is supplied to the Balances pallet by the node template runtime.
   type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
 }
-}
 ///TINHTX
 impl pallet_nicks::Config for Runtime {
 	// The Balances pallet implements the ReservableCurrency trait.
@@ -580,3 +579,4 @@ impl pallet_nicks::Config for Runtime {
 	// The ubiquitous event type.
 	type RuntimeEvent = RuntimeEvent;
 	}
+}
