@@ -272,7 +272,7 @@ impl pallet_nicks::Config for Runtime {
 	type MaxLength = ConstU32<32>;
 	
 	// The ubiquitous event type.
-	type RuntimeEvent = RuntimeEvent;
+	type Event = Event;
 	}
 impl pallet_transaction_payment::Config for Runtime {
 	type Event = Event;
