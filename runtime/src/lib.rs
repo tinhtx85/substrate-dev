@@ -133,7 +133,10 @@ pub fn native_version() -> NativeVersion {
 }
   
 const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
-
+const fn deposit(items: u32, bytes: u32) -> Balance {
+	items as Balance * 15 * CENTS + (bytes as Balance) * 6 * CENTS
+	}
+	const AVERAGE_ON_INITIALIZE_RATIO: Perbill = Perbill::from_percent(10);
 parameter_types! {
 	pub const BlockHashCount: BlockNumber = 2400;
 	pub const Version: RuntimeVersion = VERSION;
