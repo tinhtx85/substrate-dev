@@ -131,7 +131,9 @@ pub const DAYS: BlockNumber = HOURS * 24;
 pub fn native_version() -> NativeVersion {
 	NativeVersion { runtime_version: VERSION, can_author_with: Default::default() }
 }
-  
+pub const MILLICENTS: Balance = 1_000_000_000;
+pub const CENTS: Balance = 1_000 * MILLICENTS;
+pub const DOLLARS: Balance = 100 * CENTS;
 const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
 const fn deposit(items: u32, bytes: u32) -> Balance {
 	items as Balance * 15 * CENTS + (bytes as Balance) * 6 * CENTS
