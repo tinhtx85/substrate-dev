@@ -131,27 +131,7 @@ pub const DAYS: BlockNumber = HOURS * 24;
 pub fn native_version() -> NativeVersion {
 	NativeVersion { runtime_version: VERSION, can_author_with: Default::default() }
 }
-/*** Add a block similar to the following ***/
- 
-  impl pallet_contracts::Config for Runtime {
-	type Time = Timestamp;
-	type Randomness = RandomnessCollectiveFlip;
-	type Currency = Balances;
-	type Event = Event;
-	type Call = Call;
-	type CallFilter = frame_support::traits::Nothing;
-	type WeightPrice = pallet_transaction_payment::Pallet<Self>;
-	type WeightInfo = pallet_contracts::weights::SubstrateWeight<Self>;
-	type ChainExtension = ();
-	type Schedule = Schedule;
-	type CallStack = [pallet_contracts::Frame<Self>; 31];
-	type AddressGenerator = pallet_contracts::DefaultAddressGenerator;
-	type ContractAccessWeight = DefaultContractAccessWeight<BlockWeights>;
-	type MaxCodeLen = ConstU32<{ 256 * 1024 }>;
-	type RelaxedMaxCodeLen = ConstU32<{ 512 * 1024 }>;
-	type MaxStorageKeyLen = ConstU32<{ 512 * 1024 }>;
-  }
-  /*** End added block ***/
+  
 const NORMAL_DISPATCH_RATIO: Perbill = Perbill::from_percent(75);
 
 parameter_types! {
@@ -165,7 +145,28 @@ parameter_types! {
 	pub const SS58Prefix: u8 = 42;
 	pub Schedule: pallet_contracts::Schedule<Runtime> = Default::default();
 }
-
+impl pallet_contracts::Config for Runtime {
+	type Time = Timestamp;
+	type Randomness = RandomnessCollectiveFlip;
+	type Currency = Balances;
+	type Event = Event;
+	type Call = Call;
+	type CallFilter = frame_support::traits::Nothing;
+	type WeightPrice = pallet_transaction_payment::Pallet<Self>;
+	type WeightInfo = pallet_contracts::weights::SubstrateWeight<Self>;
+	type ChainExtension = ();
+	type Schedule = Schedule;
+	type CallStack = [pallet_contracts::Frame<Self>; 31];
+	type DeletionQueueDepth = DeletionQueueDepth;
+	type DeletionWeightLimit = DeletionWeightLimit;
+	type DepositPerByte = DepositPerByte;
+	type DepositPerItem = DepositPerItem;
+	type AddressGenerator = pallet_contracts::DefaultAddressGenerator;
+	type ContractAccessWeight = DefaultContractAccessWeight<BlockWeights>;
+	type MaxCodeLen = ConstU32<{ 256 * 1024 }>;
+	type RelaxedMaxCodeLen = ConstU32<{ 512 * 1024 }>;
+	type MaxStorageKeyLen = ConstU32<{ 512 * 1024 }>;
+  }
 // Configure FRAME pallets to include in runtime.
 
 impl frame_system::Config for Runtime {
